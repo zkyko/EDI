@@ -1,0 +1,4 @@
+# EDI Stored Procedure Standardization Analyzer
+# Backend uses only the Python 3.10+ standard library.
+# A minimal pytest dependency is included for the test suite.
+pytest>=7.4

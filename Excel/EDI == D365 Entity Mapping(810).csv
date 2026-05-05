@@ -1,0 +1,73 @@
+Data,Type,Level,Description,Required,D365 Field Path
+Transaction ID,String,Header,"Hard-coded ""810""",Y,
+Accounting ID,String,Header,Customer Number,Y,SALESINVOICEHEADERV4ENTITY/INVOICECUSTOMERACCOUNTNUMBER
+Invoice #,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICENUMBER
+Invoice Date,Date,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICEDATE
+PO #,String,Header,Customer PO Number,Y,SALESINVOICEHEADERV4ENTITY/CUSTOMERSORDERREFERENCE
+PO Date,Date,Header,Customer Order Date,Y,SALESORDERHEADERV2ENTITY/CICORDERDATE
+Department #,String,Header,Customer Department Number,Y,Development 
+Bill Of Lading,String,Header,,Y,
+Carrier Pro,String,Header,,Y,
+SCAC,String,Header,Carrier SCAC Code,Y,
+Ship Via,String,Header,Carrier Full Name,Y,
+Ship To Name,String,Header,,Y,SalesOrderHeader/DeliveryAddressName
+Ship To Address 1,String,Header,,Y,SalesOrderHeader/DeliveryAddressStreet
+Ship To Address 2,String,Header,,Y,
+Ship To City,String,Header,,Y,SalesOrderHeader/DeliveryAddressCity
+Ship To State,String,Header,,Y,SalesOrderHeader/DeliveryAddressStateId
+Ship To Zip,String,Header,,Y,SalesOrderHeader/DeliveryAddressZipCode
+Ship To Country,String,Header,Two character country code,Y,SalesOrderHeader/DeliveryAddressCountryRegionId
+Store #,String,Header,Customer Store Number,Y,
+Bill To Name,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/SALESORDERNUMBER
+Bill To Address 1,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICEADDRESSSTREET
+Bill To Address 2,String,Header,,Y,
+Bill To City,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICEADDRESSCITY
+Bill To State,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICEADDRESSSTATE
+Bill To Zip,String,Header,,Y,SALESINVOICEHEADERV4ENTITY/INVOICEADDRESSZIPCODE
+Bill To Country,String,Header,Two character country code,Y,SALESINVOICEHEADERV4ENTITY/INVOICEADDRESSCOUNTRYREGIONID
+Bill To Code,String,Header,,Y,
+Ship Date,Date,Header,,Y,
+Terms Description,String,Header,"Term Code, e.g. Net 30",Y,SalesInvoiceHeader/PaymentTermsName
+Net Days Due,String,Header,,Y,
+Discount Days Due,String,Header,,,
+Discount Percent,Real,Header,,Y,
+Note,String,Header,,Y,
+Weight,Real,Header,,,
+Total Cases Shipped,String,Header,,,
+Tax Amount,String,Header,,Y,
+Charge Amount 1,Real,Header,,Y,
+Charge Amount 2,Real,Header,,,
+Allowance Percent 1,Real,Header,,,
+Allowance Amount 1,Real,Header,,,
+Allowance Percent 2,Real,Header,,,
+Allowance Amount 2,Real,Header,,,
+Line #,Integer,Item,Customer PO Line Number,Y,
+Vendor Part #,String,Item,FH Item Number,Y,SalesInvoiceLines/ProductNumber
+Buyers Part #,String,Item,Customer SKU,Y,
+UPC,String,Item,UPC Code,Y,
+Description,String,Item,Item Description,Y,SalesOrderLines/LineDescription
+Quantity Shipped,Real,Item,,Y,SalesInvoiceLines/InvoicedQuantity
+UOM,String,Item,"Hard-coded ""EA""",Y,
+Unit Price,Real,Item,,Y,SalesInvoiceLines/SalesPrice
+Quantity Ordered,Real,Item,,,
+Pack Size,Real,Item,,,
+# of Inner Packs,Real,Item,,,
+Item Allowance Percent,Real,Item,Discount %,Y,
+Item Allowance Amount,Real,Item,Discount Amount,Y,
+Due Date,Date,Header,Invoice Due Date,Y,
+Partner Name,String,Header,,,
+Total of Line Items,String,Header,,,
+Total Amount,String,Header,,Y,SalesInvoiceHeader/TotalInvoiceAmount
+Routing,String,Header,,Y,
+Code Type,String,Header,,,
+Code,String,Header,,,
+DC#,String,Header,Customer Distribution Center,Y,
+SKU #,String,Item,,,
+Requested Arrival Date,String,Header,,,
+Purpose,String,Header,,Y,
+EAN#,String,Item,,,
+Transportation Method,String,Header,,,
+Type,String,Header,,,
+Based On,String,Header,,,
+Ship To Code,String,Header,,Y,
+Vendor #,String,Header,Customer Vendor Number for FH,Y,

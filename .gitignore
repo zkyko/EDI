@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Raw SQL source (large, sensitive — keep out of public repo)
+SQL/
+
+# Analyzer output CSVs (large, derivable — excluded from repo)
+output/*.csv
+
+# The built data files ARE committed so GitHub Actions can deploy without
+# re-running the Python analyzer:
+# frontend/public/data/procedures.json  ← keep tracked
+# frontend/public/data/parser_validation.csv  ← keep tracked
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.suo
+*.user
