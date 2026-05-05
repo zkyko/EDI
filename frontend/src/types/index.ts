@@ -255,6 +255,54 @@ export interface ProcedureSummary {
 }
 
 // ─────────────────────────────────────────────
+// Customer Mapping Config (human-reviewed artifact)
+// ─────────────────────────────────────────────
+
+export type MappingFieldStatus =
+  | "confirmed"      // human reviewed and approved
+  | "needs_review"   // flagged for human verification
+  | "rejected"       // marked incorrect
+  | "auto"           // pre-populated from analyzer, not yet reviewed
+
+export type MappingSourceType =
+  | "standard_field"  // maps to a named standard field
+  | "hardcoded"       // literal value
+  | "derived"         // transformation / expression
+  | "unknown"         // could not determine
+
+export interface MappingFieldRow {
+  edi_position: number;
+  output_field_name: string;
+  source_type: MappingSourceType;
+  source_value: string;           // standard field name, literal, or expression
+  source_table: string;
+  source_column: string;
+  transformation_rule: string;
+  format_rule: string;
+  default_value: string;
+  required: boolean;
+  status: MappingFieldStatus;
+  confidence: string;             // high | low | unknown_needs_review
+  notes: string;
+  // evidence link (read-only, from analyzer)
+  evidence_file: string;
+  evidence_line: number;
+  evidence_snippet: string;
+}
+
+export interface CustomerMappingConfig {
+  customer: string;
+  transaction_type: string;
+  generated_from: string;         // source procedure name
+  created_at: string;
+  last_modified: string;
+  fields: MappingFieldRow[];
+}
+
+// In-memory store for all configs (keyed by customer name)
+export type MappingConfigStore = Record<string, CustomerMappingConfig>;
+
+// ─────────────────────────────────────────────
 // App data
 // ─────────────────────────────────────────────
 export interface AppData {

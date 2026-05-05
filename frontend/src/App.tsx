@@ -5,6 +5,9 @@ import { useData } from "./hooks/useData";
 import Dashboard from "./pages/Dashboard";
 import Procedures from "./pages/Procedures";
 import ProcedureDetail from "./pages/ProcedureDetail";
+import MappingEditor from "./pages/MappingEditor";
+import OutputPreview from "./pages/OutputPreview";
+import MigrationPlanning from "./pages/MigrationPlanning";
 import ReviewRequired from "./pages/ReviewRequired";
 import ExecutiveSummary from "./pages/ExecutiveSummary";
 
@@ -42,16 +45,6 @@ function AppRoutes() {
                 </code>
               </li>
               <li>
-                Optionally copy{" "}
-                <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">
-                  output/parser_validation.csv
-                </code>{" "}
-                to{" "}
-                <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">
-                  frontend/public/data/
-                </code>
-              </li>
-              <li>
                 Run{" "}
                 <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">
                   npm run dev
@@ -75,6 +68,9 @@ function AppRoutes() {
         <Route path="/" element={<Dashboard data={data} />} />
         <Route path="/procedures" element={<Procedures data={data} />} />
         <Route path="/procedures/:name" element={<ProcedureDetail data={data} />} />
+        <Route path="/mapping-editor" element={<MappingEditor data={data} />} />
+        <Route path="/output-preview" element={<OutputPreview data={data} />} />
+        <Route path="/migration" element={<MigrationPlanning data={data} />} />
         <Route path="/review" element={<ReviewRequired data={data} />} />
         <Route path="/executive" element={<ExecutiveSummary data={data} />} />
       </Routes>
