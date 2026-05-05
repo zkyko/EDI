@@ -3,19 +3,27 @@ name: Deploy EDI Dashboard to GitHub Pages
 on:
   push:
     branches: [main]
-  # Allow manual trigger from the Actions tab
   workflow_dispatch:
 
-# Allow the workflow to write to gh-pages branch
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -33,10 +41,11 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      # The built output is in frontend/dist — deploy it to gh-pages branch
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist
-          publish_branch: gh-pages
+          path: ./frontend/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
