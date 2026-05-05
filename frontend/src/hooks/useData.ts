@@ -129,9 +129,10 @@ export function useData(): {
   useEffect(() => {
     async function load() {
       try {
+        const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         const [jsonRes, parserRes] = await Promise.all([
-          fetch("/data/procedures.json"),
-          fetch("/data/parser_validation.csv"),
+          fetch(`${base}/data/procedures.json`),
+          fetch(`${base}/data/parser_validation.csv`),
         ]);
 
         if (!jsonRes.ok) {
