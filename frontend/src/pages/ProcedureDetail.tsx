@@ -4,7 +4,6 @@ import type { AppData, Procedure, ColumnDelta } from "../types";
 import {
   Badge,
   Card,
-  SectionHeader,
   Tabs,
   Table,
   Tr,
