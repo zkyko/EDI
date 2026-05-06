@@ -255,9 +255,30 @@ export interface ProcedureSummary {
 }
 
 // ─────────────────────────────────────────────
+// AUDIT TRAIL
+// An immutable record written every time a mapping field is changed.
+// ─────────────────────────────────────────────
+export interface AuditEntry {
+  timestamp: string;           // ISO-8601
+  edited_by: string;           // name entered by user
+  field: string;               // which property was changed
+  previous_value: string;
+  new_value: string;
+  reason_for_change: string;   // required before saving an edit
+  review_status: "pending" | "approved" | "flagged";
+}
+
+// ─────────────────────────────────────────────
+// Origin tag — tracks where each field row came from
+// ─────────────────────────────────────────────
+export type MappingOrigin =
+  | "evidence"       // directly from analyzer output, never touched by human
+  | "human_edited"   // analyzer-derived but subsequently edited
+  | "human_added"    // created from scratch by a human (no analyzer backing)
+
+// ─────────────────────────────────────────────
 // Customer Mapping Config (human-reviewed artifact)
 // ─────────────────────────────────────────────
-
 export type MappingFieldStatus =
   | "confirmed"      // human reviewed and approved
   | "needs_review"   // flagged for human verification
@@ -274,7 +295,7 @@ export interface MappingFieldRow {
   edi_position: number;
   output_field_name: string;
   source_type: MappingSourceType;
-  source_value: string;           // standard field name, literal, or expression
+  source_value: string;
   source_table: string;
   source_column: string;
   transformation_rule: string;
@@ -282,20 +303,29 @@ export interface MappingFieldRow {
   default_value: string;
   required: boolean;
   status: MappingFieldStatus;
-  confidence: string;             // high | low | unknown_needs_review
+  confidence: string;          // high | low | unknown_needs_review
   notes: string;
-  // evidence link (read-only, from analyzer)
+  // ── Origin & audit (Rule 1, 2) ────────────────────
+  origin: MappingOrigin;
+  audit_trail: AuditEntry[];   // immutable append-only list of changes
+  // ── Evidence link (read-only, from analyzer) ──────
   evidence_file: string;
   evidence_line: number;
   evidence_snippet: string;
+  evidence_parser_rule: string;
+  evidence_confidence: string; // original confidence from analyzer (immutable)
+  evidence_delta_status: string; // original delta status from analyzer (immutable)
 }
 
 export interface CustomerMappingConfig {
   customer: string;
   transaction_type: string;
-  generated_from: string;         // source procedure name
+  generated_from: string;
   created_at: string;
   last_modified: string;
+  // ── Audit metadata ─────────────────────────────────
+  schema_version: "1.0";
+  generated_by: "edi-analyzer-frontend";
   fields: MappingFieldRow[];
 }
 
@@ -303,12 +333,32 @@ export interface CustomerMappingConfig {
 export type MappingConfigStore = Record<string, CustomerMappingConfig>;
 
 // ─────────────────────────────────────────────
+// Readiness score breakdown (Rule 4 — exact formula + contributing values)
+// ─────────────────────────────────────────────
+export interface ReadinessComponent {
+  label: string;
+  description: string;         // human-readable formula explanation
+  max_points: number;
+  earned_points: number;
+  raw_value: string;           // the actual data value that drove this score
+  formula: string;             // e.g. "matches / (matches + missing + ...) × 40"
+}
+
+export interface ReadinessBreakdown {
+  total: number;
+  components: ReadinessComponent[];
+  // Rule 6 — unresolved fields never count as standardized
+  standardized_field_count: number;   // confirmed only, excludes unresolved/auto/rejected
+  unresolved_field_count: number;
+  caveat: string | null;             // non-null if score is inflated by unreviewed fields
+}
+
+// ─────────────────────────────────────────────
 // App data
 // ─────────────────────────────────────────────
 export interface AppData {
   proceduresJson: ProceduresJson;
   parserValidation: ParserValidationRow[];
-  // convenience lookup maps
   deltaByProc: Record<string, ProcedureDelta>;
   mappingValidationByProc: Record<string, MappingValidationRow[]>;
   procedureSummaries: ProcedureSummary[];
